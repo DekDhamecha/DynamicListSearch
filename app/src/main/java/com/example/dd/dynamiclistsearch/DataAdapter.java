@@ -88,44 +88,12 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.DataHolder> im
             mSearchFilter = new SearchFilter(dataListUnFilter);
         }
         return mSearchFilter;
-
-        /*return new Filter() {
-
-            @Override
-            protected FilterResults performFiltering(CharSequence constraint) {
-                String searchString = constraint.toString().toLowerCase().trim();
-
-                if (TextUtils.isEmpty(searchString)) {
-                    dataList = dataListUnFilter;
-                } else {
-                    List<DataModel> filteredList = new ArrayList<>();
-                    for (DataModel dm : dataList) {
-                        if (dm.getTitle().toLowerCase().contains(searchString)) {
-                            filteredList.add(dm);
-                        }
-                    }
-
-                    dataList = filteredList;
-                }
-
-                FilterResults results = new FilterResults();
-                results.values = dataList;
-
-                return results;
-            }
-
-            @Override
-            protected void publishResults(CharSequence constraint, FilterResults results) {
-                //noinspection unchecked
-                dataList = (List<DataModel>) results.values;
-                notifyDataSetChanged();
-            }
-        };*/
     }
+    
 
     /**
      * Custom Filter class to overtake List Items issue
-     * on Search and Delete Item that are revised on refresh search
+     * Delete Items while searching that are revised on refresh search
      */
     class SearchFilter extends Filter {
 
@@ -135,7 +103,7 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.DataHolder> im
             this.listToFilter = listToFilter;
         }
 
-        // Update Base Search List on Item Remove while searching
+        // Update Base Search List on Item Removed while searching
         void updateList(DataModel dataModel) {
             listToFilter.remove(dataModel);
         }
@@ -199,7 +167,7 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.DataHolder> im
             dataList.remove(pos);
             notifyItemRemoved(pos);
 
-            // Remove Object from Original Data in Filter
+            // Remove Object from Original Data from SearchFilter Class
             if (mSearchFilter != null) {
                 mSearchFilter.updateList(dataModel);
             }
